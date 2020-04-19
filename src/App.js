@@ -1,33 +1,17 @@
-import React from "react";
-import clsx from "clsx";
 import Box from "@material-ui/core/Box";
-import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import {
-  createMuiTheme,
-  ThemeProvider,
-  makeStyles,
-  useTheme,
-} from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import purple from "@material-ui/core/colors/purple";
-import green from "@material-ui/core/colors/green";
-
+import clsx from "clsx";
+import React from "react";
+import Controls from "./components/Controls";
 import RandomMap from "./components/RandomMap";
-import ExampleMap from './components/ExampleMap';
-import { TextField, Input } from "@material-ui/core";
+import theme from './theme';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: purple,
-    secondary: green,
-  },
-  status: {
-    danger: "orange",
-  },
-});
+
 
 const drawerWidth = 240;
 
@@ -93,52 +77,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Controls({ setForm, form }) {
-  console.log(`rendering controls with`, form);
-  const [formValues, setFormValues] = React.useState({
-    countryCount: 0,
-    ...form,
-  });
-
-  const doSubmit = (e) => {
-    e.preventDefault();
-    setForm(formValues);
-  };
-
-  const updateFormValues = (e) => {
-    e.preventDefault();
-    setFormValues({
-      ...formValues,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  return (
-    <form noValidate autoComplete="off" onSubmit={doSubmit}>
-      <div>
-        <TextField
-          id="countryCount"
-          name="countryCount"
-          label="No. Countries"
-          type="number"
-          size="small"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={formValues.countryCount}
-          onChange={updateFormValues}
-        />
-      </div>
-      <div>
-        <Input type="submit" label="Update" />
-      </div>
-    </form>
-  );
-}
-
 function App() {
   const classes = useStyles();
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [countryCount, setCountryCount] = React.useState(1000);
 
@@ -153,7 +93,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box className={classes.root} height="100%">
+      <Box className={classes.root}>
         <Drawer
           variant="permanent"
           className={clsx(classes.drawer, {

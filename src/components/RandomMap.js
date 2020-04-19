@@ -17,17 +17,14 @@ const styles = makeStyles((theme) => ({
     position: 'relative',
     height: 0,
     width: '100%', 
-    padding: theme.spacing(4),
-    // left: 0,
-    // top: 0,
+    padding: theme.spacing(4),    
+    verticalAlign: 'text-top'
+    
   },
   parentSvg: {
     position: 'absolute', 
     padding: theme.spacing(4),
-    // height: '100%',
-    // width: '100%',
-    left: 0,
-    top: 0,
+    verticalAlign: 'text-top'
   }
 }))
 
@@ -99,7 +96,7 @@ function RandomMap({ countryCount = 10}) {
           className={classes.parentSvg}
           viewBox={`0 0 ${width} ${height}`}
           preserveAspectRatio="xMinYMax meet">
-          <ComposableMap preserveAspectRatio="xMinYMax">
+          <ComposableMap preserveAspectRatio="xMinYMin">
             <Geographies geography={geoUrl}>
               {({geographies}) => 
                 <SelectGeographies 
