@@ -1,6 +1,7 @@
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import React, { useMemo } from "react";
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+import { geoCentroid } from "d3-geo";
+import React, { useEffect, useMemo } from "react";
+import { Annotation, ComposableMap, Geographies, Geography } from "react-simple-maps";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
 
@@ -27,21 +28,23 @@ const select = (geographies, selectCount) => {
   // Shuffle array
   const shuffled = geographies.sort(() => 0.5 - Math.random());
   // Get sub-array of first n elements after shuffled
-  return shuffled
-    .slice(0, selectCount)
-    .map((geo) => geo.properties["NAME"]);
+  return shuffled.slice(0, selectCount);
 }
 
 function SelectGeographies({geographies, selectCount, setSelected}) {  
   const theme = useTheme();
-  const selected = useMemo(() => select(geographies, selectCount), [selectCount]);
-  setSelected(selected);
-  let count = 0;
+  const selected = useMemo(() => select(geographies, selectCount), [selectCount, geographies]);
+  const selectedNames = selected.map(geo => geo.properties["NAME"]);
+
+  useEffect(() => {
+    setSelected(selected);
+  }, [selected, setSelected]);
+
   return geographies.map((geo) => {
-    if (selected.includes(geo.properties["NAME"])) {
-      console.log('selected', geo);
+    if (selectedNames.includes(geo.properties["NAME"])) {
       return (
         <Geography          
+          key={geo.rsmKey}
           geography={geo}
           style={{
             default: {
@@ -57,7 +60,6 @@ function SelectGeographies({geographies, selectCount, setSelected}) {
         <Geography
           key={geo.rsmKey}
           geography={geo}
-          label={count++}
           style={{
             default: {
               fill: theme.palette.secondary.main,
@@ -69,10 +71,28 @@ function SelectGeographies({geographies, selectCount, setSelected}) {
   });
 }
 
-function RandomMap({ countryCount = 10}) {
+function Annotations({selected}) {
+  return useMemo(() => selected.map((geo, index) => {
+      const centroid = geoCentroid(geo);
+      const postive = Math.random() < 0.5 ? -1 : 1;
+      return (
+        <Annotation
+          key={geo.rsmKey}
+          subject={centroid}
+          dx={(10 + Math.random() * 20) * postive}
+          dy={10 + Math.random() * 20}
+        >
+          <text x={4} fontSize={14} alignmentBaseline="middle">
+            {index + 1}
+          </text>
+        </Annotation>
+      )
+    }), [selected]);
+}
+
+function RandomMap({svgId = "randomMap", countryCount = 10, selected, setSelected}) {
   const { height, width } = useWindowDimensions();
   const classes = styles();
-  const [selected, setSelected] = React.useState([]);
 
   return (
     <div 
@@ -83,19 +103,21 @@ function RandomMap({ countryCount = 10}) {
       }}
       >
         <svg 
+          id={svgId}
           className={classes.parentSvg}
           viewBox={`0 0 ${width} ${height}`}
           preserveAspectRatio="xMinYMax meet">
           <ComposableMap preserveAspectRatio="xMinYMin">
             <Geographies geography={geoUrl}>
               {({geographies}) => 
-                <SelectGeographies 
+                <SelectGeographies                   
                   geographies={geographies} 
                   selectCount={countryCount} 
                   setSelected={setSelected}
                 />
               }
             </Geographies>
+            <Annotations selected={selected} />            
           </ComposableMap>
         </svg>      
     </div>

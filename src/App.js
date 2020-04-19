@@ -19,16 +19,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
+  const svgId = "map-svg"
   const classes = useStyles();
   const [countryCount, setCountryCount] = React.useState(defaultContries);
+  const [selected, setSelected] = React.useState([]);
   
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box className={classes.root}>
-        <SideMenu countryCount={countryCount} setCountryCount={setCountryCount} />
+        <SideMenu 
+          svgId={svgId}
+          countryCount={countryCount} 
+          setCountryCount={setCountryCount}           
+          selected={selected}
+        />
         <Box className={classes.content}>
-          <RandomMap countryCount={countryCount} />
+          <RandomMap 
+            svgId={svgId}
+            countryCount={countryCount} 
+            selected={selected}
+            setSelected={setSelected}
+          />
         </Box>        
       </Box>
     </ThemeProvider>
