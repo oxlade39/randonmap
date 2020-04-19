@@ -1,16 +1,8 @@
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import React, { useMemo } from "react";
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  ZoomableGroup,
-} from "react-simple-maps";
-import {
-  makeStyles,
-  useTheme,
-} from "@material-ui/core/styles";
-
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+
 
 const styles = makeStyles((theme) => ({
   svgContainer: {
@@ -40,31 +32,35 @@ const select = (geographies, selectCount) => {
     .map((geo) => geo.properties["NAME"]);
 }
 
-function SelectGeographies({geographies, selectCount}) {
+function SelectGeographies({geographies, selectCount, setSelected}) {  
+  const theme = useTheme();
   const selected = useMemo(() => select(geographies, selectCount), [selectCount]);
+  setSelected(selected);
+  let count = 0;
   return geographies.map((geo) => {
     if (selected.includes(geo.properties["NAME"])) {
+      console.log('selected', geo);
       return (
-        <Geography
-          key={geo.rsmKey}
+        <Geography          
           geography={geo}
           style={{
             default: {
-              fill: "#F53",
-              outline: "none",
+              fill: theme.palette.primary.main,
+              stroke: theme.palette.secondary.main,
+              strokeWidth: 1
             },
           }}
-        />
+        />        
       );
     } else {
       return (
         <Geography
           key={geo.rsmKey}
           geography={geo}
+          label={count++}
           style={{
             default: {
-              fill: "none",
-              outline: "none",
+              fill: theme.palette.secondary.main,
             },
           }}
         />
@@ -75,14 +71,8 @@ function SelectGeographies({geographies, selectCount}) {
 
 function RandomMap({ countryCount = 10}) {
   const { height, width } = useWindowDimensions();
-
-  const scale = 1;
-  const svgHeight = height * scale;
-  const svgWidth = width;
-
   const classes = styles();
-
-  // console.log(`height: ${height}, width: ${width}`);
+  const [selected, setSelected] = React.useState([]);
 
   return (
     <div 
@@ -102,6 +92,7 @@ function RandomMap({ countryCount = 10}) {
                 <SelectGeographies 
                   geographies={geographies} 
                   selectCount={countryCount} 
+                  setSelected={setSelected}
                 />
               }
             </Geographies>
