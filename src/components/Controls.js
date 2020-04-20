@@ -1,8 +1,10 @@
-import { Button, Input, List, ListItem, ListItemIcon, ListItemText, TextField, IconButton} from "@material-ui/core";
+import { Button, Input, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import ImageIcon from '@material-ui/icons/Image';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import React from "react";
-import ImageIcon from '@material-ui/icons/Image';
+import CountryList from "./CountryList";
+import {svgId, exportFileName} from '../constants';
 
 const saveSvgAsPng = require('save-svg-as-png')
 
@@ -24,7 +26,7 @@ const styles = makeStyles((theme) => ({
   }
 }))
 
-function Controls({ svgId, setForm, form, selected }) {
+function Controls({ setForm, form, selected }) {
   const [formValues, setFormValues] = React.useState({
     countryCount: 0,
     ...form,
@@ -45,7 +47,7 @@ function Controls({ svgId, setForm, form, selected }) {
 
   const saveSvg = (e) => {
     e.preventDefault();
-    saveSvgAsPng.saveSvgAsPng(document.getElementById(svgId), 'shapes.png', imageOptions);
+    saveSvgAsPng.saveSvgAsPng(document.getElementById(svgId), exportFileName, imageOptions);
   }
 
   const classes = styles();
@@ -91,18 +93,7 @@ function Controls({ svgId, setForm, form, selected }) {
         </Button>
       </form>
       <div>
-        <List component="nav" className={classes.root}>
-          {selected.map((geo, index) => {
-            return (
-              <ListItem button key={geo.rsmKey}>
-                <ListItemIcon className={classes.listItemIcon}>
-                  {index + 1}
-                </ListItemIcon>
-                <ListItemText primary={geo.properties["NAME"]} />
-              </ListItem>
-            )
-          })}
-        </List>
+        <CountryList countries={selected}/>
       </div>
     </>
   );

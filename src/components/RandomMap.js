@@ -1,9 +1,10 @@
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { geoCentroid } from "d3-geo";
-import React, { useEffect, useMemo } from "react";
-import { Annotation, ComposableMap, Geographies, Geography } from "react-simple-maps";
+import React, { useMemo } from "react";
+import { Annotation, ComposableMap, Geographies } from "react-simple-maps";
 import useWindowDimensions from "../hooks/useWindowDimensions";
-
+import SelectGeographies from "./SelectGeographies";
+import { geoUrl, svgId } from '../constants';
 
 const styles = makeStyles((theme) => ({
   svgContainer: {
@@ -20,56 +21,6 @@ const styles = makeStyles((theme) => ({
     verticalAlign: 'text-top'
   }
 }))
-
-const geoUrl =
-  "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
-
-const select = (geographies, selectCount) => {
-  // Shuffle array
-  const shuffled = geographies.sort(() => 0.5 - Math.random());
-  // Get sub-array of first n elements after shuffled
-  return shuffled.slice(0, selectCount);
-}
-
-function SelectGeographies({geographies, selectCount, setSelected}) {  
-  const theme = useTheme();
-  const selected = useMemo(() => select(geographies, selectCount), [selectCount, geographies]);
-  const selectedNames = selected.map(geo => geo.properties["NAME"]);
-
-  useEffect(() => {
-    setSelected(selected);
-  }, [selected, setSelected]);
-
-  return geographies.map((geo) => {
-    if (selectedNames.includes(geo.properties["NAME"])) {
-      return (
-        <Geography          
-          key={geo.rsmKey}
-          geography={geo}
-          style={{
-            default: {
-              fill: theme.palette.primary.main,
-              stroke: theme.palette.secondary.main,
-              strokeWidth: 1
-            },
-          }}
-        />        
-      );
-    } else {
-      return (
-        <Geography
-          key={geo.rsmKey}
-          geography={geo}
-          style={{
-            default: {
-              fill: theme.palette.secondary.main,
-            },
-          }}
-        />
-      );
-    }
-  });
-}
 
 function Annotations({selected}) {
   return useMemo(() => selected.map((geo, index) => {
@@ -90,7 +41,7 @@ function Annotations({selected}) {
     }), [selected]);
 }
 
-function RandomMap({svgId = "randomMap", countryCount = 10, selected, setSelected}) {
+function RandomMap({countryCount = 10, selected, setSelected}) {
   const { height, width } = useWindowDimensions();
   const classes = styles();
 

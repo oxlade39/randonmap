@@ -5,7 +5,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Settings from "@material-ui/icons/Settings";
 import clsx from "clsx";
 import React from "react";
-import { drawerWidth } from '../constants';
+import { drawerWidth, svgId } from '../constants';
 import Controls from "./Controls";
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function SideMenu({svgId, countryCount, setCountryCount, selected}) {
+function SideMenu({countryCount, setCountryCount, selected}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -99,7 +99,6 @@ function SideMenu({svgId, countryCount, setCountryCount, selected}) {
       </div>
 
       {open && <Controls 
-        svgId={svgId}
         setForm={updateControls} 
         form={{ countryCount }} 
         selected={selected}
