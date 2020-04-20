@@ -22,7 +22,7 @@ const styles = makeStyles((theme) => ({
   }
 }))
 
-function RandomMap({countryCount = 10, selected, setSelected}) {
+function RandomMap({countryCount = 10, selected, setSelected, mapId}) {
   const { height, width } = useWindowDimensions();
   const classes = styles();
 
@@ -43,6 +43,7 @@ function RandomMap({countryCount = 10, selected, setSelected}) {
             <Geographies geography={geoUrl}>
               {({geographies}) => 
                 <SelectGeographies                   
+                  mapId={mapId}
                   geographies={geographies} 
                   selectCount={countryCount} 
                   setSelected={setSelected}

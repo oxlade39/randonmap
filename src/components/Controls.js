@@ -1,43 +1,41 @@
 import { Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ImageIcon from '@material-ui/icons/Image';
-import RefreshIcon from '@material-ui/icons/Refresh';
+import ImageIcon from "@material-ui/icons/Image";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import React from "react";
-import { exportFileName, svgId } from '../constants';
+import { exportFileName, svgId } from "../constants";
 import CountryList from "./CountryList";
 
-const saveSvgAsPng = require('save-svg-as-png')
+const saveSvgAsPng = require("save-svg-as-png");
 
 const imageOptions = {
   scale: 5,
   encoderOptions: 1,
-  backgroundColor: 'white',
-}
+  backgroundColor: "white",
+};
 
 const styles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   button: {
     marginTop: theme.spacing(1),
     margin: theme.spacing(0.5),
-    fontSize: '0.5em',
-
+    fontSize: "0.5em",
   },
   listItemIcon: {
     minWidth: theme.spacing(3),
-  }
-}))
+  },
+}));
 
-function Controls({ setForm, form, selected }) {
-  const [formValues, setFormValues] = React.useState({
-    countryCount: 0,
-    ...form,
+function Controls({ onUpdate, defaultValues, selected }) {
+  const [formValues, setFormValues] = React.useState({    
+    ...defaultValues,
   });
 
   const doSubmit = (e) => {
     e.preventDefault();
-    setForm(formValues);
+    onUpdate(formValues);
   };
 
   const updateFormValues = (e) => {
@@ -50,14 +48,23 @@ function Controls({ setForm, form, selected }) {
 
   const saveSvg = (e) => {
     e.preventDefault();
-    saveSvgAsPng.saveSvgAsPng(document.getElementById(svgId), exportFileName, imageOptions);
-  }
+    saveSvgAsPng.saveSvgAsPng(
+      document.getElementById(svgId),
+      exportFileName,
+      imageOptions
+    );
+  };
 
   const classes = styles();
 
   return (
     <>
-      <form noValidate autoComplete="off" onSubmit={doSubmit} className={classes.root}>
+      <form
+        noValidate
+        autoComplete="off"
+        onSubmit={doSubmit}
+        className={classes.root}
+      >        
         <div>
           <TextField
             id="countryCount"
@@ -73,30 +80,32 @@ function Controls({ setForm, form, selected }) {
           />
         </div>
         <div>
-            <Button
+          <Button
             variant="contained"
             color="primary"
             size="small"
             component="span"
             className={classes.button}
             startIcon={<RefreshIcon />}
-            >
+            onClick={doSubmit}
+          >
             Update
-            </Button>
-            <Button 
+          </Button>
+          <Button
             variant="contained"
             color="secondary"
             size="small"
             component="span"
             className={classes.button}
             startIcon={<ImageIcon />}
-            onClick={saveSvg}>          
-                Export
-            </Button>
-        </div>        
+            onClick={saveSvg}
+          >
+            Export
+          </Button>
+        </div>
       </form>
       <div>
-        <CountryList countries={selected}/>
+        <CountryList countries={selected} />
       </div>
     </>
   );

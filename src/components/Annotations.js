@@ -17,7 +17,7 @@ function Annotations({selected}) {
           >
             <text 
                 x={postive === 1 ? 5 : -10} y={5} 
-                fontSize={theme.typography.fontSize} 
+                fontSize={theme.typography.fontSize * 2} 
                 alignmentBaseline="below">
               {index + 1}
             </text>

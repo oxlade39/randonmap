@@ -6,7 +6,6 @@ import Settings from "@material-ui/icons/Settings";
 import clsx from "clsx";
 import React from "react";
 import { drawerWidth } from '../constants';
-import Controls from "./Controls";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -66,7 +65,9 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function SideMenu({countryCount, setCountryCount, selected}) {
+function SideMenu({
+  children
+}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -74,9 +75,6 @@ function SideMenu({countryCount, setCountryCount, selected}) {
     setOpen(!open);
   };
 
-  const updateControls = (form) => {
-    setCountryCount(form.countryCount);
-  };
 
   return (
     <Drawer
@@ -98,11 +96,7 @@ function SideMenu({countryCount, setCountryCount, selected}) {
         </IconButton>
       </div>
 
-      {open && <Controls 
-        setForm={updateControls} 
-        form={{ countryCount }} 
-        selected={selected}
-        />}
+      {open && children}
     </Drawer>
   );
 }
