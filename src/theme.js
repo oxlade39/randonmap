@@ -10,4 +10,7 @@ export default createMuiTheme({
     status: {
       danger: "orange",
     },
+    typography: {
+        fontSize: 12
+    }
   })

@@ -5,7 +5,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Settings from "@material-ui/icons/Settings";
 import clsx from "clsx";
 import React from "react";
-import { drawerWidth, svgId } from '../constants';
+import { drawerWidth } from '../constants';
 import Controls from "./Controls";
 
 const useStyles = makeStyles((theme) => ({

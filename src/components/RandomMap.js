@@ -1,10 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { geoCentroid } from "d3-geo";
-import React, { useMemo } from "react";
-import { Annotation, ComposableMap, Geographies } from "react-simple-maps";
-import useWindowDimensions from "../hooks/useWindowDimensions";
-import SelectGeographies from "./SelectGeographies";
+import React from "react";
+import { ComposableMap, Geographies } from "react-simple-maps";
 import { geoUrl, svgId } from '../constants';
+import useWindowDimensions from "../hooks/useWindowDimensions";
+import Annotations from "./Annotations";
+import SelectGeographies from "./SelectGeographies";
 
 const styles = makeStyles((theme) => ({
   svgContainer: {
@@ -21,25 +21,6 @@ const styles = makeStyles((theme) => ({
     verticalAlign: 'text-top'
   }
 }))
-
-function Annotations({selected}) {
-  return useMemo(() => selected.map((geo, index) => {
-      const centroid = geoCentroid(geo);
-      const postive = Math.random() < 0.5 ? -1 : 1;
-      return (
-        <Annotation
-          key={geo.rsmKey}
-          subject={centroid}
-          dx={(10 + Math.random() * 20) * postive}
-          dy={10 + Math.random() * 20}
-        >
-          <text x={4} fontSize={14} alignmentBaseline="middle">
-            {index + 1}
-          </text>
-        </Annotation>
-      )
-    }), [selected]);
-}
 
 function RandomMap({countryCount = 10, selected, setSelected}) {
   const { height, width } = useWindowDimensions();

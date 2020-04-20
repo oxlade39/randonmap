@@ -1,10 +1,10 @@
-import { Button, Input, TextField } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ImageIcon from '@material-ui/icons/Image';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import React from "react";
+import { exportFileName, svgId } from '../constants';
 import CountryList from "./CountryList";
-import {svgId, exportFileName} from '../constants';
 
 const saveSvgAsPng = require('save-svg-as-png')
 
@@ -20,6 +20,9 @@ const styles = makeStyles((theme) => ({
   },
   button: {
     marginTop: theme.spacing(1),
+    margin: theme.spacing(0.5),
+    fontSize: '0.5em',
+
   },
   listItemIcon: {
     minWidth: theme.spacing(3),
@@ -69,28 +72,28 @@ function Controls({ setForm, form, selected }) {
             onChange={updateFormValues}
           />
         </div>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          type="submit"
-          component="span"
-          className={classes.button}
-          startIcon={<RefreshIcon />}
-        >
-          <Input type="submit" size="small" label="Update" value="Update" />
-        </Button>
-        <Button 
-          variant="contained"
-          color="secondary"
-          size="small"
-          type="submit"
-          component="span"
-          className={classes.button}
-          startIcon={<ImageIcon />}
-          onClick={saveSvg}>          
-            <Input type="submit" size="small" label="Update" value="Save" />
-        </Button>
+        <div>
+            <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            component="span"
+            className={classes.button}
+            startIcon={<RefreshIcon />}
+            >
+            Update
+            </Button>
+            <Button 
+            variant="contained"
+            color="secondary"
+            size="small"
+            component="span"
+            className={classes.button}
+            startIcon={<ImageIcon />}
+            onClick={saveSvg}>          
+                Export
+            </Button>
+        </div>        
       </form>
       <div>
         <CountryList countries={selected}/>
