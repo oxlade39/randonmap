@@ -2,10 +2,11 @@ import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import Settings from "@material-ui/icons/Settings";
+import Visibility from "@material-ui/icons/Visibility";
 import clsx from "clsx";
 import React from "react";
 import { drawerWidth } from '../constants';
+import { Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,6 +66,18 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+function Buttons({open}) {
+  if (open) {
+    return <ChevronLeftIcon />
+  } else {
+    return (
+      <Tooltip title="Reveal">
+        <Visibility />
+      </Tooltip>    
+    )
+  }
+}
+
 function SideMenu({
   children
 }) {
@@ -92,7 +105,7 @@ function SideMenu({
     >
       <div className={classes.toolbar}>
         <IconButton onClick={toggleDraw}>
-          {open ? <ChevronLeftIcon /> : <Settings />}
+          <Buttons open={open} />
         </IconButton>
       </div>
 
