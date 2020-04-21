@@ -1,12 +1,10 @@
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
-import { NumberParam, StringParam, useQueryParams, withDefault } from "use-query-params";
-import { v4 as uuidv4 } from "uuid";
-import { defaultContries, defaultUUID } from "../constants";
 import Controls from "./Controls";
 import RandomMap from "./RandomMap";
 import SideMenu from "./SideMenu";
+import useMapControls from './useMapControls';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,36 +17,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Container() {
-  const classes = useStyles();
-  const [query, setQuery] = useQueryParams({
-    countryCount: withDefault(NumberParam, defaultContries),
-    mapId: withDefault(StringParam, defaultUUID),
-  });
+  const classes = useStyles();  
   const [selected, setSelected] = React.useState([]);
 
-  const updateControls = (controls) => {
-    console.log('controls update to', controls);
-    setQuery(
-      {
-        mapId: uuidv4(),
-        countryCount: controls.countryCount,
-      },
-      "push"
-    );
-  };
+  const { query, update, random } = useMapControls();
 
   useEffect(() => {
-    setQuery({
-        mapId: uuidv4(),
-        ...query
-    });
+    random();
   }, []);
 
   return (
     <Box className={classes.root}>
       <SideMenu countryCount={query.countryCount} selected={selected}>
         <Controls
-          onUpdate={updateControls}
+          onUpdate={update}
           defaultValues={{
             ...query,
           }}

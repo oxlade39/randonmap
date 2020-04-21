@@ -1,12 +1,13 @@
+import { Fab, List, ListItem, ListItemIcon } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
-import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import Reload from '@material-ui/icons/Replay';
 import Visibility from "@material-ui/icons/Visibility";
 import clsx from "clsx";
 import React from "react";
 import { drawerWidth } from '../constants';
-import { Tooltip } from "@material-ui/core";
+import useMapControls from "./useMapControls";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -64,16 +65,37 @@ const useStyles = makeStyles((theme) => ({
       // necessary for content to be below app bar
       ...theme.mixins.toolbar,
     },
+    closedButtons: {
+      minWidth: 0
+    }
   }));
 
-function Buttons({open}) {
+function Buttons({open, toggleDraw}) {
+  const classes = useStyles();
+  const { random } = useMapControls();
   if (open) {
-    return <ChevronLeftIcon />
-  } else {
     return (
-      <Tooltip title="Reveal">
-        <Visibility />
-      </Tooltip>    
+      <Fab onClick={toggleDraw} size="small">
+        <ChevronLeftIcon />
+      </Fab>
+    )
+      
+  } else {
+    return (      
+      <List className={classes.closedButtons}>
+        <ListItem button onClick={toggleDraw}>
+          <ListItemIcon>
+            <Visibility />
+          </ListItemIcon>          
+        </ListItem>
+        <ListItem button onClick={random}>
+          <ListItemIcon>
+            <Reload />
+          </ListItemIcon>          
+        </ListItem>
+        <ListItem>                  
+        </ListItem>      
+      </List>
     )
   }
 }
@@ -104,9 +126,7 @@ function SideMenu({
       }}
     >
       <div className={classes.toolbar}>
-        <IconButton onClick={toggleDraw}>
-          <Buttons open={open} />
-        </IconButton>
+        <Buttons toggleDraw={toggleDraw} open={open} />
       </div>
 
       {open && children}
