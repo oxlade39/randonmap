@@ -1,8 +1,8 @@
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { ComposableMap, Geographies } from "react-simple-maps";
-import { geoUrl, svgId } from '../constants';
-import useWindowDimensions from "../hooks/useWindowDimensions";
+import { geoUrl, svgId } from '../../constants';
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 import Annotations from "./Annotations";
 import SelectGeographies from "./SelectGeographies";
 

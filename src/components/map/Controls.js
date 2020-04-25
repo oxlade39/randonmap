@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ImageIcon from "@material-ui/icons/Image";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import React from "react";
-import { exportFileName, svgId } from "../constants";
+import { exportFileName, svgId } from "../../constants";
 import CountryList from "./CountryList";
 
 const saveSvgAsPng = require("save-svg-as-png");

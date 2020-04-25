@@ -6,7 +6,7 @@ import Reload from '@material-ui/icons/Replay';
 import Visibility from "@material-ui/icons/Visibility";
 import clsx from "clsx";
 import React from "react";
-import { drawerWidth } from '../constants';
+import { drawerWidth } from '../../constants';
 import useMapControls from "./useMapControls";
 
 const useStyles = makeStyles((theme) => ({
