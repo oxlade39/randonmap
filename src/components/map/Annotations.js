@@ -1,29 +1,26 @@
-import { geoCentroid } from "d3-geo";
-import React, { useMemo } from "react";
-import { Annotation } from "react-simple-maps";
-import {useTheme} from "@material-ui/core"
+import { Text } from '@vx/text';
+import React from "react";
 
-function Annotations({selected}) {
-    const theme = useTheme();    
-    return useMemo(() => selected.map((geo, index) => {                
-        const centroid = geoCentroid(geo);
-        const postive = Math.random() < 0.5 ? -1 : 1;
-        return (
-          <Annotation
-            key={geo.rsmKey}
-            subject={centroid}
-            dx={(10 + Math.random() * 20) * postive}
-            dy={10 + Math.random() * 20}
-          >
-            <text 
-                x={postive === 1 ? 5 : -10} y={5} 
-                fontSize={theme.typography.fontSize * 2} 
-                alignmentBaseline="below">
-              {index + 1}
-            </text>
-          </Annotation>
-        )
-      }), [selected, theme.typography.fontSize]);
+
+function Annotations({mercator, selectedSet}) {
+  return mercator.features
+    .filter(feature => {
+      const { feature: f} = feature;
+      const isSelected = selectedSet.has(f.properties.name) ? 1 : 0;
+      return isSelected;
+    })
+    .map((feature, i) => {
+      return (
+        <Text 
+          key={feature.feature.properties.name}
+          verticalAnchor="start"
+          x={feature.centroid[0]}
+          y={feature.centroid[1]}          
+        >
+          {i + 1}
+        </Text>
+      )
+    });
   }
 
   export default Annotations;

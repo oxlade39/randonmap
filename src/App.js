@@ -1,9 +1,10 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { QueryParamProvider, transformSearchStringJsonSafe } from "use-query-params";
-import Container from "./components/map/Container";
+import MapContainer from "./components/map/MapContainer";
+import WordsearchContainer from "./components/wordsearch/Container";
 import theme from "./theme";
 
 const queryStringifyOptions = {
@@ -19,7 +20,17 @@ function App() {
           ReactRouterRoute={Route}
           stringifyOptions={queryStringifyOptions}
         >
-          <Container />
+          <Switch>
+            <Route path="/map">
+              <MapContainer />
+            </Route>
+            <Route path="/wordsearch">
+              <WordsearchContainer />
+            </Route>            
+            <Route>
+              <MapContainer />
+            </Route>
+          </Switch>          
         </QueryParamProvider>
       </Router>
     </ThemeProvider>

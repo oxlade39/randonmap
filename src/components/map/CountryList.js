@@ -8,16 +8,16 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-function CountryList({ countries }) {
+function CountryList({ countries = [] }) {
   const classes = styles();
   return (
     <List component="nav" className={classes.root}>
       {countries.map((country, index) => (
-        <ListItem button key={country.rsmKey}>
+        <ListItem button key={country.properties.name}>
           <ListItemIcon className={classes.listItemIcon}>
             {index + 1}
           </ListItemIcon>
-          <ListItemText primary={country.properties["NAME"]} />
+          <ListItemText primary={country.properties.name} />
         </ListItem>
       ))}
     </List>
