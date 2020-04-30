@@ -24,7 +24,19 @@ function RandomMap({world, selected}) {
               width="100%"
               height="100%"
               >
-              <rect x={0} y={0} fill={bg} rx={14} width="100%" height="100%"/>
+              <defs>
+                <radialGradient id = "g1" cx = "50%" cy = "50%" r = "50%">
+                    <stop stop-color = "#31439B" offset = "0%"/>
+                    <stop stop-color = "#263373" offset = "50%"/>                    
+                    <stop stop-color = "#1A224C" offset = "75%"/>
+                    <stop stop-color = "#0D1126" offset = "100%"/>
+                    {/* <stop stop-color = "#4058CB" offset = "0%"/>
+                    <stop stop-color = "#3A4DAF" offset = "50%"/>                    
+                    <stop stop-color = "#2E3C86" offset = "75%"/>
+                    <stop stop-color = "#273371" offset = "100%"/> */}
+                </radialGradient>
+              </defs>
+              <rect x={0} y={0} fill="url(#g1)" rx={14} width="100%" height="100%"/>
               {world && <Map data={world} selected={selected} width={parent.width} height={parent.height} />}
             </svg>
           )  
