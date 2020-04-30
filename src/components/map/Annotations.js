@@ -13,6 +13,7 @@ function Annotations({mercator, selectedSet}) {
       return (
         <Text 
           key={feature.feature.properties.name}
+          fill="white"
           verticalAnchor="start"
           x={feature.centroid[0]}
           y={feature.centroid[1]}          
