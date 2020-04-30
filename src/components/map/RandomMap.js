@@ -78,6 +78,7 @@ function Countries({mercator, selectedSet}) {
             fill={color(isSelected ? 1 : 0)}
             stroke={bg}
             strokeWidth={0.5}
+            opacity={isSelected ? 1 : 0.5}
             onClick={event => {
               console.log({f, mercator, center: feature.centroid});
             }}
